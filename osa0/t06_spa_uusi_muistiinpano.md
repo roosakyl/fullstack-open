@@ -7,6 +7,6 @@ sequenceDiagram
         activate server
         server-->>browser: JSON file (status 201 Created, response message: "note created")
         deactivate server
-        Note right of browser: The JSON file is posted to the server. The data is saved to the server and the page is rerendered to show the new note on the page.
+        Note right of browser: The data is posted to the server in JSON format. The data is saved to the server and the ul list is re-rendered to show the new note on the page.
 
 ```
