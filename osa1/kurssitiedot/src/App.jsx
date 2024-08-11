@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const Header = (props) => {
   return (
     <>
@@ -34,6 +36,7 @@ const Total = (props) => {
 }
 
 const App = () => {
+
   
   const course = {
     name: 'Half Stack application development',
