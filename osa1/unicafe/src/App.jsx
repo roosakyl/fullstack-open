@@ -26,11 +26,11 @@ const Statistics = ({good, bad, neutral}) => {
     <div>
       <table>
         <tbody>
-      <tr><StatisticLine text="Good" value={good} unit="" /></tr>
-      <tr><StatisticLine text="Neutral" value={neutral} unit="" /></tr>
-      <tr><StatisticLine text="Bad" value={bad} unit="" /></tr>
-      <tr><StatisticLine text="All" value={good + neutral + bad} unit="" /></tr>
-      <tr><StatisticLine text="Average" value={((good - bad) / (good + neutral + bad)).toFixed(2)} unit="" /></tr>
+      <tr><StatisticLine text="Good" value={good} /></tr>
+      <tr><StatisticLine text="Neutral" value={neutral} /></tr>
+      <tr><StatisticLine text="Bad" value={bad} /></tr>
+      <tr><StatisticLine text="All" value={good + neutral + bad} /></tr>
+      <tr><StatisticLine text="Average" value={((good - bad) / (good + neutral + bad)).toFixed(2)} /></tr>
       <tr><StatisticLine text="Positive" value={(good / (good + neutral + bad) * 100).toFixed(2)} unit="%" /></tr>
       </tbody>
       </table>
