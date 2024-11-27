@@ -6,7 +6,7 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
-  const NumberList = ({name}) => {
+  const PersonInfo = ({name}) => {
     return (
       <li key={name}>{name}</li>
     )
@@ -20,8 +20,9 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault();
     const newPerson = {name: newName}
-    setPersons(persons.concat(newPerson));
-    console.log(persons);
+    const alreadyAdded = persons.filter((person) => person.name === newName);
+    //If the name is already on the list, prevent addition and give an alert. If not, add the name to the list
+    alreadyAdded.length > 0 ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(newPerson))
   }
 
   return (
@@ -42,7 +43,7 @@ const App = () => {
         <ul>
           {persons.map((person) => {
           return (
-            <NumberList name={person.name} />
+            <PersonInfo name={person.name} key={person.name} />
           )
         })}
         </ul>
