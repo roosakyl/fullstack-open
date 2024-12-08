@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter' 
 import Persons from './components/Persons' 
 import PersonForm from './components/PersonForm' 
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,8 +14,8 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
         setPersons(response.data)
       })
@@ -38,7 +39,15 @@ const App = () => {
     const newPerson = {name: newName, number: newNumber}
     const alreadyAdded = persons.filter((person) => person.name === newName);
     //If the name is already on the list, prevent addition and give an alert. If not, add the name to the list
-    alreadyAdded.length > 0 ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(newPerson))
+    if (alreadyAdded.length > 0) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+    personService
+      .create(newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+      })
+    }
   }
 
   return (
