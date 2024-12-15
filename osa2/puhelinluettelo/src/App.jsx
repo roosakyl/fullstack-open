@@ -39,6 +39,7 @@ const App = () => {
     //get the person object that we want to delete
     const person = persons.find((p) => p.id === event.target.value)
     if (window.confirm(`Delete ${person.name}?`)) {
+      //chain promises
       personService
         .deletePerson(person.id)
         .then(() => personService.getAll())
@@ -57,7 +58,18 @@ const App = () => {
     const alreadyAdded = persons.filter((person) => person.name === newName);
     //If the name is already on the list, prevent addition and give an alert. If not, add the name to the list
     if (alreadyAdded.length > 0) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook. Do you want to update the number?`)) {
+        const personId = alreadyAdded[0].id
+        personService
+          .updatePerson(personId, newPerson)
+          .then(() => personService.getAll())
+          .then(response => {
+            setPersons(response.data)
+          })
+          .catch (error => {
+            console.error("Error: ", error)
+          })
+      }
     } else {
     personService
       .create(newPerson)
