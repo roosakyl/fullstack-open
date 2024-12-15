@@ -34,6 +34,23 @@ const App = () => {
    setFilter(event.target.value)
   }
 
+  const deletePerson = (event) => {
+    event.preventDefault();
+    //get the person object that we want to delete
+    const person = persons.find((p) => p.id === event.target.value)
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .deletePerson(person.id)
+        .then(() => personService.getAll())
+        .then(response => {
+          setPersons(response.data)
+      })
+      .catch (error => {
+        console.error("Error: ", error)
+      })
+    }
+  }
+
   const addName = (event) => {
     event.preventDefault();
     const newPerson = {name: newName, number: newNumber}
@@ -45,6 +62,7 @@ const App = () => {
     personService
       .create(newPerson)
       .then(response => {
+        console.log(response.data)
         setPersons(persons.concat(response.data))
       })
     }
@@ -57,7 +75,7 @@ const App = () => {
       <PersonForm addName={addName} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       <Filter filter={filter} handler={handleFilterChange} />
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deletePerson={deletePerson} />
 
     </div>
   )
