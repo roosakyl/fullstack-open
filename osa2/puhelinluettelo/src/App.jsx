@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from './components/Filter' 
+import Notification from './components/Notification' 
 import Persons from './components/Persons' 
 import PersonForm from './components/PersonForm' 
 import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -34,6 +35,18 @@ const App = () => {
    setFilter(event.target.value)
   }
 
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [notification]);
+
   const deletePerson = (event) => {
     event.preventDefault();
     //get the person object that we want to delete
@@ -45,6 +58,10 @@ const App = () => {
         .then(() => personService.getAll())
         .then(response => {
           setPersons(response.data)
+          setNotification(
+            {type: 'success',
+              message: `${person.name} was deleted from contacts`
+            })
       })
       .catch (error => {
         console.error("Error: ", error)
@@ -65,9 +82,17 @@ const App = () => {
           .then(() => personService.getAll())
           .then(response => {
             setPersons(response.data)
+            setNotification(
+              {type: 'success',
+                message: `The number of ${newName} was updated`
+              })
           })
           .catch (error => {
             console.error("Error: ", error)
+            setNotification(
+              {type: 'error',
+                message: `${newName} does not exist`
+              })
           })
       }
     } else {
@@ -76,14 +101,19 @@ const App = () => {
       .then(response => {
         console.log(response.data)
         setPersons(persons.concat(response.data))
+        setNotification(
+          {type: 'success',
+            message: `${newName} was added to contacts`
+          })
       })
     }
   }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
       <h3>Add name</h3>
+      <Notification notification={notification} />
       <PersonForm addName={addName} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       <Filter filter={filter} handler={handleFilterChange} />
