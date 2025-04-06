@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import DisplayResult from './components/DisplayResult'
+import SearchField from './components/SearchField'
 
 const App = () => {
   const [value, setValue] = useState('')
@@ -25,18 +26,16 @@ const App = () => {
         .then(response => {
           setCountryInfo(response.data)
           setFoundCountry('')
-          console.log(response.data)
         })
     }
   }, [foundCountry])
 
   const handleChange = (event) => {
     setValue(event.target.value)
+    setCountryInfo(null)
     let filtered = allCountries.filter((country) => country.name.common.toLowerCase().includes(event.target.value))
-    console.log('filtered ', filtered)
     //handle short inputs
     if (event.target.value.length == 0) {
-      console.log('length 0')
       setQueryInfo('')
       setFilteredCountries([])
       return null
@@ -50,7 +49,6 @@ const App = () => {
     if (filtered.length > 10) {
       setQueryInfo('Too many results, please specify')
     } else if (filtered.length <= 10 || filtered.length > 1) {
-      console.log('we here?')
       setQueryInfo('')
       setFilteredCountries(filtered)
     }
@@ -59,23 +57,17 @@ const App = () => {
     if (filtered.length === 1) {
       setFilteredCountries(filtered)
       setFoundCountry(filtered[0].name.common)
-      console.log('maa: ', filtered[0].name.common)
     }
   }
 
-  const QueryInfo = ({ queryInfo }) => {
-    return (
-      <div>{queryInfo}</div>
-    )
-  }
+  const showCountry = (countryName) => {
+    setFoundCountry(countryName)
+}
 
   return (
     <div>
-      <form>
-        Find countries: <input value={value} onChange={handleChange} />
-        <QueryInfo queryInfo={queryInfo} />
-      </form>
-      <DisplayResult filteredCountries={filteredCountries} countryInfo={countryInfo} />
+      <SearchField value={value} handleChange={handleChange} queryInfo={queryInfo} />
+      <DisplayResult filteredCountries={filteredCountries} countryInfo={countryInfo} showCountry={showCountry} />
     </div>
   )
 }

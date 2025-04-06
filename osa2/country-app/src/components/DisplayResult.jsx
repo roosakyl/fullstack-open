@@ -1,13 +1,14 @@
 import CountryList from "./CountryList"
 import CountryInfo from "./CountryInfo"
 
-const DisplayResult = ({ filteredCountries, countryInfo }) => {
+const DisplayResult = ({ filteredCountries, countryInfo, showCountry }) => {
 
+    //filteredCountries is null at the beginning, which prevents rendering the components at the beginning
     if (filteredCountries !== null) {
-        if (filteredCountries.length === 1 && countryInfo !== null) {
+        if (countryInfo !== null) {
             return <CountryInfo countryInfo={countryInfo} />
         } else {
-            return <CountryList filteredCountries={filteredCountries} />
+            return <CountryList filteredCountries={filteredCountries} showCountry={showCountry} />
     }
     }
 }

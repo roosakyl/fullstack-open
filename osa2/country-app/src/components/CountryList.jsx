@@ -1,11 +1,7 @@
-const showCountry =() => {
-    
-}
-
-const CountryList = ({ filteredCountries}) => {
+const CountryList = ({ filteredCountries, showCountry}) => {
     if (filteredCountries) {
       return (
-        <>{filteredCountries.map((country, i) => <li key={i}>{country.name.common}</li>)}
+        <>{filteredCountries.map((country, i) => <li key={i}>{country.name.common} <button value={country.name.common} onClick={() => showCountry(country.name.common)}>Show</button></li>)}
         </>
       )
     }
