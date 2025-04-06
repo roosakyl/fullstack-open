@@ -33,6 +33,7 @@ const App = () => {
   const handleChange = (event) => {
     setValue(event.target.value)
     let filtered = allCountries.filter((country) => country.name.common.toLowerCase().includes(event.target.value))
+    console.log('filtered ', filtered)
     //handle short inputs
     if (event.target.value.length == 0) {
       console.log('length 0')
@@ -49,10 +50,11 @@ const App = () => {
     if (filtered.length > 10) {
       setQueryInfo('Too many results, please specify')
     } else if (filtered.length <= 10 || filtered.length > 1) {
+      console.log('we here?')
       setQueryInfo('')
       setFilteredCountries(filtered)
     }
-    
+
     //handle finding just one country
     if (filtered.length === 1) {
       setFilteredCountries(filtered)
