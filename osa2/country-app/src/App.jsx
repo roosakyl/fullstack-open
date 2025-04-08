@@ -21,6 +21,7 @@ const App = () => {
 
   useEffect(() => {
     if (foundCountry.length > 1) {
+
       axios
         .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${foundCountry}`)
         .then(response => {
